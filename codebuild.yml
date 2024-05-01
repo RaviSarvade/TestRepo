@@ -1,0 +1,24 @@
+version: 0.2
+env:
+  variables:
+    region: "us-east-1"
+phases:
+  install:
+    runtime-versions:
+      python: 3.11
+  pre_build:
+    commands:
+      - echo "Installing Dependencies"
+      - pip install -r day-14/simple-python-app/requirements.txt
+  build:
+    commands:
+      - echo "Build is initiating"
+      - cd day-14/simple-python-app/
+      - echo "Building Docker Image"
+      - docker build -t simple-python-app:latest .
+      - aws ecr get-login-password --region $region | docker login --username AWS --password-stdin 580194822445.dkr.ecr.us-east-1.amazonaws.com
+      - docker tag simple-python-app:latest 580194822445.dkr.ecr.us-east-1.amazonaws.com/simple-python-application
+      - docker push 580194822445.dkr.ecr.us-east-1.amazonaws.com/simple-python-application
+  post_build:
+    commands:
+      - echo "Build Completed successfully"
