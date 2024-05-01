@@ -2,6 +2,10 @@ version: 0.2
 env:
   variables:
     region: "us-east-1"
+    DOCKER_REGISTRY_URL: "docker.io"
+  parameter-store:
+    user: "/docke/username"
+    pwd: "/docke/password"
 phases:
   install:
     runtime-versions:
@@ -15,6 +19,7 @@ phases:
       - echo "Build is initiating"
       - cd day-14/simple-python-app/
       - echo "Building Docker Image"
+      - echo "$pwd" | docker login -u "$user" --password-stdin "$DOCKER_REGISTRY_URL"
       - docker build -t simple-python-app:latest .
       - aws ecr get-login-password --region $region | docker login --username AWS --password-stdin 580194822445.dkr.ecr.us-east-1.amazonaws.com
       - docker tag simple-python-app:latest 580194822445.dkr.ecr.us-east-1.amazonaws.com/simple-python-application
