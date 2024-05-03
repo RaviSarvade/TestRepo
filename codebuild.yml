@@ -20,10 +20,10 @@ phases:
       - cd day-14/simple-python-app/
       - echo "Building Docker Image"
       - echo "$pwd" | docker login -u "$user" --password-stdin "$DOCKER_REGISTRY_URL"
-      - docker build -t simple-python-app:latest .
-      - aws ecr get-login-password --region $region | docker login --username AWS --password-stdin 580194822445.dkr.ecr.us-east-1.amazonaws.com
-      - docker tag simple-python-app:latest 580194822445.dkr.ecr.us-east-1.amazonaws.com/simple-python-application
-      - docker push 580194822445.dkr.ecr.us-east-1.amazonaws.com/simple-python-application
+      - docker build -t "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/simple-python-app:latest" .
+      #- aws ecr get-login-password --region $region | docker login --username AWS --password-stdin 580194822445.dkr.ecr.us-east-1.amazonaws.com
+      #- docker tag simple-python-app:latest $DOCKER_REGISTRY_URL/simple-python-application
+      - docker push "$DOCKER_REGISTRY_URL/$DOCKER_REGISTRY_USERNAME/simple-python-app:latest"
   post_build:
     commands:
       - echo "Build Completed successfully"
