@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: utils
-    name: utils
+  name: utils
 spec:
   replicas: 3
   selector:
@@ -18,8 +18,8 @@ spec:
       - image: sreeharshav/utils:latest
         name: utils
         volumeMounts:
-          mountPath: /var/run/docker.sock
-          name: dockersocket
+          - mountPath: /var/run/docker.sock
+            name: dockersocket
       volumes:
         - name: dockersocket
           hostPath:
