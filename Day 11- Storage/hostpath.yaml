@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+  metadata:
+    labels:
+      app: utils
+      name: utils
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: utils
+  template:
+    metadata:
+      labels:
+        app: utils
+    spec:
+      containers:
+      - image: sreeharshav/utils:latest
+        name: utils
+        volumeMounts:
+          mountPath: /var/run/docker.sock
+          name: dockersocket
+      volumes:
+        - name: dockersocket
+          hostPath:
+            path: /var/run/docker.sock
+            type: Directory
